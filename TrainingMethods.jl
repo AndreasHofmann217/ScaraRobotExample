@@ -179,3 +179,30 @@ function plotMeasurements(tm::TrainingManager, meas_set::Vector{Measurement}; pl
         close(ch)        
     end
 end
+
+function simulateMeasurements(tm::TrainingManager, meas_set::Vector{Measurement};p_custom::Union{Nothing,ComponentArray}=nothing)
+    
+    sol_array = Vector();
+
+    for meas in meas_set
+        ch = Channel(1)
+        _se = StepExecuter(
+            meas,
+            isnothing(p_custom) ? tm.p_flat : p_custom,
+            deepcopy(tm.penode_comp),
+            deepcopy(tm.loss_comp),
+            tm.grad_comp,
+            tm.sol_comp,
+            ch
+        )
+        simulateModel(_se)
+        sol = take!(ch)
+        if isnothing(sol)
+            println("failed to simulate")
+            continue
+        end
+        push!(sol_array,sol)
+    end
+    
+    return sol_array
+end

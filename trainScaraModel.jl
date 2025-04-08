@@ -5,6 +5,7 @@ Random.seed!(0815)
 rng = Random.default_rng()
 using Optimisers
 using SciMLSensitivity
+using JLD2
 
 include("ScaraModel/ScaraRobot.jl")
 using .ScaraRobot
@@ -59,13 +60,20 @@ tm = TrainingManager(train_meas,valid_meas,p,penode_settings,loss_settings,grad_
 # simulate the PeN-ODE and compare to measurements, make sure the correct t_stops are set in the sol_comp (training)
 plotMeasurements(tm, tm.train_meas)
 
-
 # generate samples for training
 tm.training_samples = generateSamples(tm.train_meas,0.05, 1e-4, tm.loss_comp.loss_signal_mapping,tm.loss_comp.loss_idx; allow_short_batches = true);
+
+losses = Vector{Float64}()
 
 for (i,_) in enumerate(Iterators.repeated((),500))
     println("step: $(i)")
     @time (_loss,_grad) = doStep(tm)
+    push!(losses,_loss)
+
+    if (i%100==0)    
+        JLD2.save(joinpath(pwd(),"checkpoints","checkpoint$(i).jld2"),Dict("parameters" => tm.p_flat, "opt_state" => tm.opt_comp.optimizer_state))
+    end
+
 end
 
 # check training results and compare to model without friction
@@ -76,3 +84,12 @@ plotMeasurements(tm, tm.train_meas;plot_original_sim=true, sim_p = p_sim)
 # check validation trajectory
 tm.sol_comp.tstops = scara_t_stops_validate
 plotMeasurements(tm, tm.validation_meas;plot_original_sim=true, sim_p = p_sim)
+
+# get solution object to generate further results such as MSE/RMSE/MAE, ...
+sol_array = simulateMeasurements(tm,tm.validation_meas;p_custom=p_sim)
+
+# MAE
+# MSE
+# RMSE
+
+# AbsMaximumError pro state
