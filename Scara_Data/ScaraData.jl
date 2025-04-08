@@ -1,7 +1,7 @@
 include("./../Measurements.jl")
 
 function getData()
-    file = "./Scara_data/ScaraTrain.h5"
+    file = "./Scara_Data/ScaraTrain.h5"
 
     # training_data
     meas_selection = [
@@ -16,7 +16,7 @@ function getData()
 
     # validation data
 
-    file = "./Scara_data/ScaraValidate.h5"
+    file = "./Scara_Data/ScaraValidate.h5"
     validation_selection = [
         "validate"
     ]
