@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
 using ModelingToolkit
 using ReverseDiff
 using Random
@@ -6,6 +11,7 @@ rng = Random.default_rng()
 using Optimisers
 using SciMLSensitivity
 using JLD2
+
 
 include("ScaraModel/ScaraRobot.jl")
 using .ScaraRobot
@@ -65,7 +71,7 @@ tm.training_samples = generateSamples(tm.train_meas,0.05, 1e-4, tm.loss_comp.los
 
 losses = Vector{Float64}()
 
-for (i,_) in enumerate(Iterators.repeated((),500))
+for (i,_) in enumerate(Iterators.repeated((),5000))
     println("step: $(i)")
     @time (_loss,_grad) = doStep(tm)
     push!(losses,_loss)
@@ -76,20 +82,16 @@ for (i,_) in enumerate(Iterators.repeated((),500))
 
 end
 
+# load existing parameters
+# loaded_dict = JLD2.load("./checkpoints/checkpoint5000.jld2")
+# tm.p_flat = loaded_dict["parameters"]
+
+
 # check training results and compare to model without friction
 p_sim = deepcopy(tm.p_flat)
 p_sim.g1 = 0.0
 plotMeasurements(tm, tm.train_meas;plot_original_sim=true, sim_p = p_sim)
 
-# check validation trajectory
+# check validation results
 tm.sol_comp.tstops = scara_t_stops_validate
 plotMeasurements(tm, tm.validation_meas;plot_original_sim=true, sim_p = p_sim)
-
-# get solution object to generate further results such as MSE/RMSE/MAE, ...
-sol_array = simulateMeasurements(tm,tm.validation_meas;p_custom=p_sim)
-
-# MAE
-# MSE
-# RMSE
-
-# AbsMaximumError pro state

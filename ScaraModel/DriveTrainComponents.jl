@@ -1,3 +1,11 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
+# Basic components required for ScaraRobot example
+# partially based on the Modelica library Servomechanisms https://github.com/afrhu/Servomechanisms
+
 module DriveTrainComponents
 
     using ModelingToolkit

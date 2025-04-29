@@ -1,4 +1,11 @@
-"Basic components required for the ScaraRobot example. Based on the excellent Modelica library PlanarMechanics from Dirk Zimmer. https://github.com/dzimmer/PlanarMechanics"
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
+# Basic components required for ScaraRobot example
+# Based on the excellent Modelica library PlanarMechanics from Dirk Zimmer. https://github.com/dzimmer/PlanarMechanics
+
 module PlanarMechanics
 
 	using ModelingToolkit

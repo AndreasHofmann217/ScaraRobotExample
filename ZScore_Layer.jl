@@ -1,3 +1,10 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
+# This is a reimplementation of the corresponding Flux Layers from FMIFlux.jl: https://github.com/ThummeTo/FMIFlux.jl
+
 using Lux
 using Random
 

@@ -1,4 +1,9 @@
-# automatically generated using MTK_GenerateODESystem.jl
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
+# automatically generated using generateDAEData.jl
 
 using DifferentialEquations
 using ModelingToolkit
@@ -576,9 +581,9 @@ function get_Scara_PeNODE_obs()
                     scara₊toMass1₊r = reshape(view(var"##arg#14522979048230911285", [69, 5]), (2,))
                     begin
                         begin
-                            var"inp1_traj₊output₊u(t)" = (Main.ScaraRobot.traj_1)(t)
-                            var"inp2_traj₊output₊u(t)" = (Main.ScaraRobot.traj_2)(t)
-                            var"inp3_traj₊output₊u(t)" = (Main.ScaraRobot.traj_3)(t)
+                            var"inp1_traj₊output₊u(t)" = se.penode_comp.input_fun[1](t)#(Main.ScaraRobot.traj_1)(t)
+                            var"inp2_traj₊output₊u(t)" = se.penode_comp.input_fun[2](t)#(Main.ScaraRobot.traj_2)(t)
+                            var"inp3_traj₊output₊u(t)" = se.penode_comp.input_fun[3](t)#(Main.ScaraRobot.traj_3)(t)
                             var"motor1₊emf₊i(t)" = var"motor1₊inductor₊i(t)"
                             var"gear1₊phi_bˍt(t)" = var"scara₊rev1₊w(t)"
                             var"gear1₊phi_b(t)" = var"scara₊rev1₊phi(t)"
@@ -907,7 +912,7 @@ function get_Scara_PeNODE_obs()
                             var"var\"scara₊mass1₊v(t)ˍt\"[2]" = var"var\"scara₊mass1₊r(t)ˍtt\"[2]"
                             var"(scara₊mass2₊f(t))[1]" = (+)((*)(var"(scara₊mass2₊a(t))[1]", scara₊mass2₊m), (*)((*)(-1, var"scara₊mass2₊g[1]"), scara₊mass2₊m))
                             var"(scara₊mass1₊a(t))[1]" = var"var\"scara₊mass1₊v(t)ˍt\"[1]"
-                            var"##getindex(scara₊tcp₊f(t), 2)#360" = (Main.ScaraRobot.ToolCenterPoint.NN_dummy)(1.0, var"scara₊tcp₊vx(t)", var"scara₊tcp₊vy(t)", var"scara₊tcp₊zForceIn₊u(t)")
+                            var"##getindex(scara₊tcp₊f(t), 2)#360" = p.g1* se.penode_comp.nn_fun[1](var"scara₊tcp₊vx(t)", var"scara₊tcp₊vy(t)", var"scara₊tcp₊zForceIn₊u(t)", p.nn1)#(Main.ScaraRobot.ToolCenterPoint.NN_dummy)(1.0, var"scara₊tcp₊vx(t)", var"scara₊tcp₊vy(t)", var"scara₊tcp₊zForceIn₊u(t)")
                             var"scara₊toMass1₊frame_b₊x(t)" = var"scara₊mass1₊frame_a₊x(t)"
                             var"scara₊toMass2₊frame_a₊x(t)" = (+)((*)(-1, var"(scara₊toTCP₊r0(t))[1]"), var"scara₊tcp₊frame_a₊x(t)")
                             var"scara₊tcp₊posXOut₊u(t)" = var"scara₊tcp₊frame_a₊x(t)"
@@ -1004,7 +1009,7 @@ end
 
 function calc_Scara_PeNODE_obs(ode_sol, obs_fun, ode_param, idx, network_param=nothing, se=nothing)
 
-	obs_res = Vector{Vector{Float64}}()
+	obs_res = Vector{Vector{Any}}()
 	for i in 1:length(ode_sol.t)
 		_u = ode_sol[i]
 		_t = ode_sol.t[i]
@@ -1013,3 +1018,4 @@ function calc_Scara_PeNODE_obs(ode_sol, obs_fun, ode_param, idx, network_param=n
 	return [obs_res[i][idx] for i in 1:length(obs_res)]
 end
 
+# (var"##arg#17830385436281994436", ___mtkparameters___, t, p, se)

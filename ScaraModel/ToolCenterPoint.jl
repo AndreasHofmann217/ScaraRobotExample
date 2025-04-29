@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
 module ToolCenterPoint
 
     using ModelingToolkit
@@ -52,6 +57,7 @@ module ToolCenterPoint
             D(x) ~ vx
             D(y) ~ vy
     
+            # implementation of stribeck friction based upon
             # https://mogi.bme.hu/TAMOP/robot_applications/ch07.html#ch-8.3.4
             Fc ~ zForceIn.u * mu_S
             Fs ~ zForceIn.u * mu_A
@@ -103,6 +109,8 @@ module ToolCenterPoint
             D(x) ~ vx
             D(y) ~ vy
     
+            # instead of using the symbolic function here, also a structural parameter could have been used,
+            # allowing to define the symbolic function outside of the component.
             f ~ NN_dummy(1.0,vx,vy,zForceIn.u)    
         end
     end

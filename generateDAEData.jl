@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
 using ModelingToolkit
 using RuntimeGeneratedFunctions
 
@@ -78,7 +83,7 @@ function generateODESystem(prob::ODEProblem,mtk_sys::ODESystem; modelname::Strin
 
         #write function to calculate obs
         write(file, "function calc_$(modelname)_obs(ode_sol, obs_fun, ode_param, idx, network_param=nothing, se=nothing)\n\n")
-        write(file, "\tobs_res = Vector{Vector{Float64}}()\n")
+        write(file, "\tobs_res = Vector{Vector{Any}}()\n")
         write(file, "\tfor i in 1:length(ode_sol.t)\n")
         write(file, "\t\t_u = ode_sol[i]\n")
         write(file, "\t\t_t = ode_sol.t[i]\n")

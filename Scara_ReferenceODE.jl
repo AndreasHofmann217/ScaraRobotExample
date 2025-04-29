@@ -1,4 +1,9 @@
-# automatically generated using MTK_GenerateODESystem.jl
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
+# automatically generated using generateDAEData.jl
 
 using DifferentialEquations
 using ModelingToolkit
@@ -42,9 +47,9 @@ function get_Scara_ReferenceODE_rhs()
                         scara₊toMass1₊r = reshape(view(ˍ₋arg2, [82, 5]), (2,))
                         begin
                             begin
-                                var"inp1_traj₊output₊u(t)" = (Main.ScaraRobot.traj_1)(t)
-                                var"inp2_traj₊output₊u(t)" = (Main.ScaraRobot.traj_2)(t)
-                                var"inp3_traj₊output₊u(t)" = (Main.ScaraRobot.traj_3)(t)
+                                var"inp1_traj₊output₊u(t)" = se.penode_comp.input_fun[1](t)#(Main.ScaraRobot.traj_1)(t)
+                                var"inp2_traj₊output₊u(t)" = se.penode_comp.input_fun[2](t)#(Main.ScaraRobot.traj_2)(t)
+                                var"inp3_traj₊output₊u(t)" = se.penode_comp.input_fun[3](t)#(Main.ScaraRobot.traj_3)(t)
                                 var"motor1₊emf₊i(t)" = ˍ₋arg1[2]
                                 var"gear1₊phi_bˍt(t)" = ˍ₋arg1[3]
                                 var"gear1₊phi_b(t)" = ˍ₋arg1[1]
@@ -603,9 +608,9 @@ function get_Scara_ReferenceODE_obs()
                     scara₊toMass1₊r = reshape(view(var"##arg#1784648527064982485", [82, 5]), (2,))
                     begin
                         begin
-                            var"inp1_traj₊output₊u(t)" = (Main.ScaraRobot.traj_1)(t)
-                            var"inp2_traj₊output₊u(t)" = (Main.ScaraRobot.traj_2)(t)
-                            var"inp3_traj₊output₊u(t)" = (Main.ScaraRobot.traj_3)(t)
+                            var"inp1_traj₊output₊u(t)" = se.penode_comp.input_fun[1](t)#(Main.ScaraRobot.traj_1)(t)
+                            var"inp2_traj₊output₊u(t)" = se.penode_comp.input_fun[2](t)#(Main.ScaraRobot.traj_2)(t)
+                            var"inp3_traj₊output₊u(t)" = se.penode_comp.input_fun[3](t)#(Main.ScaraRobot.traj_3)(t)
                             var"motor1₊emf₊i(t)" = var"motor1₊inductor₊i(t)"
                             var"gear1₊phi_bˍt(t)" = var"scara₊rev1₊w(t)"
                             var"gear1₊phi_b(t)" = var"scara₊rev1₊phi(t)"
@@ -1044,7 +1049,7 @@ end
 
 function calc_Scara_ReferenceODE_obs(ode_sol, obs_fun, ode_param, idx, network_param=nothing, se=nothing)
 
-	obs_res = Vector{Vector{Float64}}()
+	obs_res = Vector{Vector{Any}}()
 	for i in 1:length(ode_sol.t)
 		_u = ode_sol[i]
 		_t = ode_sol.t[i]

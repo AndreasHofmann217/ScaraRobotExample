@@ -1,4 +1,11 @@
-"Base components that are not available in the Modeling Toolkit Standard Library or are not applicable for this application"
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
+# Basic components required for ScaraRobot example
+# partially based on the Modelica Standard Library https://github.com/modelica/ModelicaStandardLibrary
+
 module BaseComponents
 
     using ModelingToolkit

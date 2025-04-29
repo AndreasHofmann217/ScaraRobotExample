@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
 using DataInterpolations
 using DelimitedFiles
 

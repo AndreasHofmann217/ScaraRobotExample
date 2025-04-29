@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2025 Andreas Hofmann
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+#
+
 using ChainRulesCore
 using Optimisers
 using LinearAlgebra
@@ -22,9 +27,8 @@ function prepareLossQuantities!(se::StepExecuter)
 
     # solve the system to get correct initialization, otherwise there is an issue with reversediff and return code of ode solution
     begin
-        u0 = getStates(se.sample)
         init_prob = remake(se.loss_comp.ode_prob,tspan=(se.sample.t_start,se.sample.t_start))
-        init_sol = solve(se.loss_comp.ode_prob, se.sol_comp.solver)
+        init_sol = solve(init_prob, se.sol_comp.solver)
         se.loss_comp.ode_prob = remake(se.loss_comp.ode_prob, u0=init_sol.u[1])
     end
     return nothing
@@ -135,7 +139,7 @@ function plotMeasurements(tm::TrainingManager, meas_set::Vector{Measurement}; pl
         sol = take!(ch)
         if isnothing(sol)
             println("failed to simulate")
-            continue
+            #continue
         end
         sol = sol[1] # 2nd element is name of measurement of origin of sample
         
@@ -144,7 +148,7 @@ function plotMeasurements(tm::TrainingManager, meas_set::Vector{Measurement}; pl
         for sig in tm.loss_comp.loss_signal_mapping
             sig_name = sig[1]
             sig_sim_idx = sig[2]
-            push!(ref_traces,scatter(;x=meas.signals[sig_name].time, y=meas.signals[sig_name].value, name="$(sig_name)"))
+            push!(ref_traces,scatter(;x=sol.t, y=meas.signals[sig_name].interpolation(sol.t), name="$(sig_name)"))
             push!(sim_traces, scatter(; x=sol.t, y=sol[sig_sim_idx,:], name="sim_$(sig_name)"))
         end
         _plot = plot(Layout(title=meas.name))
