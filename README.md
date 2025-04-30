@@ -9,29 +9,29 @@ This repository contains the code for the example to the Modelica Conference 202
 ### from Powershell/Bash
 1. Download Julia in Version 1.11.1 from [https://julialang.org/](https://julialang.org/)
 2. Start Julia from console in repository directory and define project via:
-    > julia --project=.
-3. Instantiate project by opening the package manager with ] and instantiating the project
-    > ]
-
-    > instantiate
-    
-    > Ctrl+C
-
-4. Execute training via
-    > julia --project=. .\trainScaraModel.jl
-
+    ```
+    julia --project=.
+    ```
+3. Instantiate project by opening the package manager and instantiating the project
+    ```julia
+    ]
+    instantiate
+    ```
+4. Close Julia and start a new session to execute training via
+    ```
+    julia --project=. .\trainScaraModel.jl
+    ```
 
 
 ### from VS Code with the Julia Extension
-1. Install Julia in Version 1.11.1 see above and install the VS Code extension afterwards
+1. Install Julia in Version 1.11.1 (see link above) and install the VS Code extension afterwards
 2. VS Code should automatically detect the ScaraRobotExample environment opening the directory (see bottom of VS Code window)
 3. Start Julia REPL by pressing Alt+J Alt+O
 4. Instantiate project from package manager
-    > ]
-
-    > instantiate
-
-    > Ctrl+C
+    ```julia
+    ]
+    instantiate
+    ```
 5. Execute training from trainScaraModel.jl by executing the file in VS Code or alternatively be executing line for line via Shift+Enter or Selection via Ctrl+Shift+Enter
 
 
